@@ -16,6 +16,7 @@ traffic logic (anyone who has sat in the red snake on a powder morning knows).
 - **Cameras:** UDOT publishes ~1-minute snapshots at
   `https://www.udottraffic.utah.gov/map/Cctv/<id>`. No API key needed; the
   developer API only adds metadata, not faster frames.
+  Camera 142232 (`white-pine-mp9.2`): counts before 2026-10-06 were recorded as `white-pine-mp8.7`.
 - **Model:** `rfdetr-base` (Apache 2.0), run locally — no cloud calls, no
   per-frame cost. COCO classes filtered to car/truck/bus/motorcycle.
 - **Dedup:** DETR-family models can emit the same physical vehicle under two

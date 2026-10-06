@@ -26,7 +26,7 @@ CAMERAS = {
     "sr209-intersection": 141829,
     "upper-vault-mp5.96": 142227,
     "seven-turns-mp7.4": 136332,
-    "white-pine-mp8.7": 142232,
+    "white-pine-mp9.2": 142232,
     "upper-white-pine-mp9.7": 140390,
     "alta-bypass-mp10.95": 142061,
     "alta-mp12.16": 137940,
