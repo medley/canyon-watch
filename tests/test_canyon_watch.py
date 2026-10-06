@@ -75,7 +75,7 @@ def test_camera_table_is_unchanged():
         "sr209-intersection": 141829,
         "upper-vault-mp5.96": 142227,
         "seven-turns-mp7.4": 136332,
-        "white-pine-mp8.7": 142232,
+        "white-pine-mp9.2": 142232,
         "upper-white-pine-mp9.7": 140390,
         "alta-bypass-mp10.95": 142061,
         "alta-mp12.16": 137940,
@@ -126,14 +126,14 @@ def test_person_overlap_does_not_drop_the_car(passthrough, tmp_path):
     snap = tmp_path / "s"
     snap.mkdir()
     reading = cw.read_camera(
-        "white-pine-mp8.7", 142232, NOW, LABEL, model, str(snap),
+        "white-pine-mp9.2", 142232, NOW, LABEL, model, str(snap),
         fetch=lambda url: bright(),
     )
     assert model.confidence == 0.25
     assert reading["vehicles"] == 1
     assert reading["status"] == "ok"
     assert reading["camera_id"] == 142232
-    assert (snap / "white-pine-mp8.7.jpg").is_file()
+    assert (snap / "white-pine-mp9.2.jpg").is_file()
 
 
 def test_two_labels_on_one_object_count_as_one():

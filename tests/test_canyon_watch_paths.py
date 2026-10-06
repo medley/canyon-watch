@@ -220,7 +220,7 @@ def test_infer_once_per_bright_frame_at_confidence_025(passthrough, tmp_path):
     snap = tmp_path / "s"
     snap.mkdir()
     first = cw.read_camera(
-        "white-pine-mp8.7", 142232, NOW, NOW_LABEL, model, str(snap),
+        "white-pine-mp9.2", 142232, NOW, NOW_LABEL, model, str(snap),
         fetch=lambda url: bright(shape=(32, 48, 3)),
     )
     assert model.calls == [(0.25, (32, 48, 3))]
@@ -264,13 +264,13 @@ def test_infer_and_fetch_exceptions_become_error_rows(tmp_path):
     snap.mkdir()
     boom = Boom()
     infer_row = cw.read_camera(
-        "white-pine-mp8.7", 142232, NOW, NOW_LABEL, boom, str(snap),
+        "white-pine-mp9.2", 142232, NOW, NOW_LABEL, boom, str(snap),
         fetch=lambda url: bright(),
     )
     assert boom.calls == [0.25]
     assert infer_row == {
         "ts": NOW_TS,
-        "camera": "white-pine-mp8.7",
+        "camera": "white-pine-mp9.2",
         "camera_id": 142232,
         "vehicles": None,
         "status": "error: detector failed",
@@ -347,7 +347,7 @@ def test_run_visits_cameras_in_dict_order(passthrough, tmp_path):
         return bright()
 
     cameras = {
-        "white-pine-mp8.7": 142232,
+        "white-pine-mp9.2": 142232,
         "alta-mp12.16": 137940,
         "sr209-intersection": 141829,
     }
@@ -415,7 +415,7 @@ def test_jsonl_lines_match_consumer_keys(passthrough, tmp_path):
         return payload
 
     cameras = {
-        "white-pine-mp8.7": 142232,
+        "white-pine-mp9.2": 142232,
         "alta-mp12.16": 137940,
         "sr209-intersection": 141829,
         "seven-turns-mp7.4": 136332,
@@ -445,7 +445,7 @@ def test_jsonl_lines_match_consumer_keys(passthrough, tmp_path):
     snap = tmp_path / "snapshots" / "20260506T070809Z"
     assert sorted(path.name for path in snap.iterdir()) == [
         "seven-turns-mp7.4.jpg",
-        "white-pine-mp8.7.jpg",
+        "white-pine-mp9.2.jpg",
     ]
 
 
@@ -458,12 +458,12 @@ def test_snapshot_jpeg_has_input_shape_and_box(passthrough, tmp_path):
     snap = tmp_path / "s"
     snap.mkdir()
     reading = cw.read_camera(
-        "white-pine-mp8.7", 142232, NOW, NOW_LABEL, RecordingModel(found), str(snap),
+        "white-pine-mp9.2", 142232, NOW, NOW_LABEL, RecordingModel(found), str(snap),
         fetch=lambda url: img,
     )
     assert reading["status"] == "ok"
     assert reading["vehicles"] == 1
-    path = snap / "white-pine-mp8.7.jpg"
+    path = snap / "white-pine-mp9.2.jpg"
     raw = path.read_bytes()
     assert raw.startswith(b"\xff\xd8")
     decoded = cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR)
@@ -495,9 +495,9 @@ def test_summary_line_formats_zero_and_null_totals(passthrough, tmp_path, capsys
         str(tmp_path),
         now=null_at,
         fetch=fail_fetch,
-        cameras={"white-pine-mp8.7": 142232, "alta-mp12.16": 137940},
+        cameras={"white-pine-mp9.2": 142232, "alta-mp12.16": 137940},
     )
     assert capsys.readouterr().out == (
         "20260102T030405Z total=0 sr209-intersection=0\n"
-        "20260102T040506Z total=None white-pine-mp8.7=None alta-mp12.16=None\n"
+        "20260102T040506Z total=None white-pine-mp9.2=None alta-mp12.16=None\n"
     )
