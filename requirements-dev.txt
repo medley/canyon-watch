@@ -1,0 +1,6 @@
+# Test-only dependencies. The suite needs no torch, inference, network or camera.
+numpy
+opencv-python-headless
+supervision
+python-dotenv
+pytest
