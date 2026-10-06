@@ -19,12 +19,16 @@ traffic logic (anyone who has sat in the red snake on a powder morning knows).
 - **Model:** `rfdetr-base` (Apache 2.0), run locally — no cloud calls, no
   per-frame cost. COCO classes filtered to car/truck/bus/motorcycle.
 - **Dedup:** DETR-family models can emit the same physical vehicle under two
-  classes (car 0.40 + truck 0.46). Class-agnostic NMS
+  classes (car 0.40 + truck 0.46). Detections are first filtered to vehicle
+  classes, then class-agnostic NMS
   (`detections.with_nms(threshold=0.5, class_agnostic=True)`) keeps one box
   per object — without it, counts run ~20% hot. Found by hand-counting a
-  frame against the model output.
-- **Guards:** near-black frames (night) and dead feeds are logged as such
-  rather than counted as zero traffic.
+  frame against the model output. Filtering first stops a higher-confidence
+  non-vehicle box (a person, a sign) from suppressing an overlapping car.
+- **Guards:** near-black frames (night) are logged as `dark`, and failed or
+  undecodable downloads (or frames over 10 MiB) as `error: ...`, rather than
+  counted as zero traffic. `_canyon_total` sums the cameras that returned a
+  count; its status says how many (`6/7 cams ok`).
 
 ## Run it
 
@@ -41,6 +45,15 @@ Cron (every 10 minutes):
 
 ```
 */10 * * * * /path/to/python /path/to/canyon_watch.py >> canyon_watch/cron.log 2>&1
+```
+
+## Tests
+
+The tests need no network, camera, model, torch or Roboflow key:
+
+```bash
+pip install -r requirements-dev.txt
+pytest
 ```
 
 ## Note for Apple Silicon
